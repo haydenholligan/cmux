@@ -9951,7 +9951,9 @@ struct VerticalTabsSidebar: View {
                     requestSelectedWorkspaceScrollAfterWorkspaceOrderChange(notification)
                 }
                 .onPreferenceChange(SidebarWorkspaceRowIdsPreferenceKey.self) { rowIds in
-                    laidOutWorkspaceRowIds = rowIds
+                    if laidOutWorkspaceRowIds != rowIds {
+                        laidOutWorkspaceRowIds = rowIds
+                    }
                     flushPendingSelectedWorkspaceScroll(scrollProxy, laidOutWorkspaceRowIds: rowIds)
                 }
             }

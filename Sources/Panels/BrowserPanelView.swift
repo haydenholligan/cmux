@@ -765,10 +765,14 @@ struct BrowserPanelView: View {
         }
         .coordinateSpace(name: "BrowserPanelViewSpace")
         .onPreferenceChange(OmnibarPillFramePreferenceKey.self) { frame in
-            omnibarPillFrame = frame
+            if omnibarPillFrame != frame {
+                omnibarPillFrame = frame
+            }
         }
         .onPreferenceChange(BrowserAddressBarHeightPreferenceKey.self) { height in
-            addressBarHeight = height
+            if addressBarHeight != height {
+                addressBarHeight = height
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .webViewDidReceiveClick).filter { [weak panel] note in
             // Only handle clicks from our own webview.

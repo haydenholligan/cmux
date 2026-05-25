@@ -77,6 +77,7 @@ select_cmux_shim_target() {
     if [[ "$path_entry" == "$app_cli_dir" ]]; then
       break
     fi
+    [[ "$path_entry" == */*.app/Contents/* ]] && continue
     [[ -d "$path_entry" && -w "$path_entry" ]] || continue
     candidate="$path_entry/cmux"
     if [[ ! -e "$candidate" ]]; then
@@ -770,11 +771,15 @@ if [[ -x "$CLI_PATH" ]]; then
 
   # Stable shim that always follows the last reload-selected dev CLI.
   DEV_CLI_SHIM="$HOME/.local/bin/cmux-dev"
-  write_dev_cli_shim "$DEV_CLI_SHIM" "/Applications/cmux.app/Contents/Resources/bin/cmux"
+  if ! write_dev_cli_shim "$DEV_CLI_SHIM" "/Applications/cmux.app/Contents/Resources/bin/cmux"; then
+    echo "warning: could not write dev cmux shim at $DEV_CLI_SHIM" >&2
+  fi
 
   CMUX_SHIM_TARGET="$(select_cmux_shim_target || true)"
   if [[ -n "${CMUX_SHIM_TARGET:-}" ]]; then
-    write_dev_cli_shim "$CMUX_SHIM_TARGET" "/Applications/cmux.app/Contents/Resources/bin/cmux"
+    if ! write_dev_cli_shim "$CMUX_SHIM_TARGET" "/Applications/cmux.app/Contents/Resources/bin/cmux"; then
+      echo "warning: could not write cmux shim at $CMUX_SHIM_TARGET" >&2
+    fi
   fi
 fi
 

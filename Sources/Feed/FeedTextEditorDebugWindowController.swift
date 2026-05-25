@@ -179,7 +179,10 @@ private struct FeedTextEditorDebugView: View {
         }
         .background(editorBackground)
         .onPreferenceChange(FeedTextEditorDebugHeightKey.self) { height in
-            mirrorHeight = max(34, ceil(height))
+            let nextHeight = max(34, ceil(height))
+            if mirrorHeight != nextHeight {
+                mirrorHeight = nextHeight
+            }
         }
     }
 
