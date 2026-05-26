@@ -77,6 +77,7 @@ select_cmux_shim_target() {
     if [[ "$path_entry" == "$app_cli_dir" ]]; then
       break
     fi
+    [[ "$path_entry" == *.app/Contents/* ]] && continue
     [[ -d "$path_entry" && -w "$path_entry" ]] || continue
     candidate="$path_entry/cmux"
     if [[ ! -e "$candidate" ]]; then
